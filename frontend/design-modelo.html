@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System — Liora Home Care</title>
+
+  <!-- Fontes do template original: Playfair Display (display serif italic) + Urbanist (sans estrutural) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Urbanist:wght@400;500;600;700&display=swap">
+
+  <!-- Mesmo sistema de ícones do original (Iconify web component, asset local) -->
+  <script src="assets/js/iconify-icon.min.js"></script>
+
+  <style>
+    /* =====================================================================
+       NOTA DE PROCEDÊNCIA
+       O <style> da página interna (iframe srcdoc) do index.html foi corrompido
+       no salvamento — um serializador HTML consumiu o CSS, apagando nomes de
+       propriedade e limites de regra. Sobreviveram intactos: TODOS os tokens
+       (--hc-*), TODOS os nomes de classe e TODOS os valores-chave (tamanhos,
+       pesos, letter-spacing, clip-paths, gradientes). Este arquivo reconstrói
+       fielmente o design system a partir desses dados recuperáveis.
+       ===================================================================== */
+
+    /* ---- Tokens originais (recuperados verbatim do :root) ---- */
+    :root {
+      --hc-bg: #f7f3ee;
+      --hc-surface: rgba(252, 250, 247, 0.72);
+      --hc-surface-strong: rgba(252, 250, 247, 0.88);
+      --hc-text: #2f312d;
+      --hc-text-soft: #7e8078;
+      --hc-line: #d8d1c7;
+      --hc-accent: #8fa08c;
+      --hc-accent-dark: #6f7f6d;
+      --hc-accent-deep: #4f5d4d;
+      --hc-shadow: 0 24px 60px rgba(32, 28, 23, 0.1);
+      --hc-shadow-soft: 0 12px 28px rgba(32, 28, 23, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--hc-bg);
+      color: var(--hc-text);
+      font-family: 'Urbanist', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .hero-font-serif {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    /* ============================ NAV FIXO ============================ */
+    .ds-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+      display: flex; align-items: center; gap: 22px;
+      padding: 14px 32px;
+      background: rgba(247, 243, 238, 0.82);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--hc-line);
+    }
+    .ds-nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; letter-spacing: -0.03em; font-size: 15px;
+      margin-right: auto;
+    }
+    .ds-nav-brand .mark {
+      width: 30px; height: 30px; display: inline-flex;
+      align-items: center; justify-content: center;
+      background: #fcfaf7; border: 1px solid rgba(47, 49, 45, 0.10);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+    }
+    .ds-nav a.link {
+      font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em;
+      color: rgba(47, 49, 45, 0.62);
+      transition: color 180ms ease;
+    }
+    .ds-nav a.link:hover { color: var(--hc-text); }
+
+    /* ============================ HELPERS DE SEÇÃO ============================ */
+    section[id] { scroll-margin-top: 72px; }
+    .ds-section { max-width: 1180px; margin: 0 auto; padding: 96px 40px; }
+    .ds-section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--hc-accent-dark);
+      margin-bottom: 20px;
+    }
+    .ds-section-label::before {
+      content: ""; width: 22px; height: 1px; background: var(--hc-accent);
+    }
+    .ds-section-title {
+      font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 0.98;
+      letter-spacing: -0.05em; font-weight: 500; margin: 0 0 14px;
+    }
+    .ds-section-intro {
+      max-width: 60ch; font-size: 16px; line-height: 1.7;
+      color: rgba(47, 49, 45, 0.7); margin: 0 0 56px;
+    }
+    .ds-divider { height: 1px; background: var(--hc-line); border: 0; margin: 0; }
+
+    /* ============================ 0 · HERO (clone adaptado) ============================ */
+    .hero-homecare {
+      position: relative; width: 100%; overflow: hidden;
+      background: linear-gradient(180deg, #f7f3ee 0%, #f1eee8 62%, #e8ede6 100%);
+      padding-top: 64px;
+    }
+    .hero-shell {
+      position: relative; z-index: 2; max-width: 1440px; margin: 0 auto;
+      padding: 48px 76px;
+      filter: drop-shadow(0 18px 30px rgba(82, 96, 79, 0.08)) drop-shadow(0 4px 8px rgba(82, 96, 79, 0.04));
+    }
+    .hero-frame {
+      position: relative; min-height: 760px; background: #ece6de;
+      border: 1px solid var(--hc-line); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03), var(--hc-shadow);
+      clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+      overflow: hidden;
+    }
+    .hero-grid-lines {
+      position: absolute; inset: 0; z-index: 1; display: flex;
+      justify-content: space-between; padding: 0 28px;
+      pointer-events: none; opacity: 0.45;
+    }
+    .hero-grid-line { width: 1px; height: 100%; background: linear-gradient(180deg, rgba(47,49,45,0.06), rgba(47,49,45,0.10), rgba(47,49,45,0.06)); }
+    .hero-content {
+      position: relative; z-index: 3; max-width: 1280px; margin: 0 auto;
+      padding: 92px 80px 90px; display: grid;
+      grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(47, 49, 45, 0.58); margin-bottom: 26px;
+      padding: 8px 14px; background: rgba(252, 250, 247, 0.90);
+      backdrop-filter: blur(10px); border: 1px solid var(--hc-line);
+    }
+    .hero-eyebrow-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--hc-accent); box-shadow: 0 0 0 4px rgba(143, 160, 140, 0.14); }
+    .hero-title {
+      font-size: clamp(3rem, 6vw, 5.4rem); line-height: 0.90;
+      letter-spacing: -0.075em; font-weight: 500; margin: 0;
+    }
+    .hero-title-accent { display: block; color: var(--hc-accent-deep); }
+    .hero-description {
+      max-width: 510px; margin: 30px 0 0; padding-left: 20px;
+      border-left: 1px solid rgba(47, 49, 45, 0.16);
+      font-size: 17px; line-height: 1.85; color: rgba(47, 49, 45, 0.78);
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+    .hero-btn-primary, .hero-btn-secondary {
+      display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 26px;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      cursor: pointer; transition: background 200ms ease, color 200ms ease, border-color 200ms ease, transform 200ms ease;
+      clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+    }
+    .hero-btn-primary { background: var(--hc-text); color: #f7f3ee; border: 1px solid var(--hc-text); }
+    .hero-btn-primary:hover { background: #1f201d; transform: translateY(-1px); }
+    .hero-btn-secondary { background: rgba(252, 250, 247, 0.62); color: var(--hc-text); border: 1px solid var(--hc-line); }
+    .hero-btn-secondary:hover { background: rgba(252, 250, 247, 0.80); border-color: var(--hc-accent); }
+    .hero-trust { max-width: 430px; margin-top: 44px; padding-top: 24px; border-top: 1px solid rgba(47, 49, 45, 0.42); display: flex; align-items: center; gap: 16px; }
+    .hero-trust-stack { display: flex; }
+    .hero-trust-dot { width: 30px; height: 30px; border-radius: 999px; margin-left: -8px; border: 2px solid #f7f3ee; background: linear-gradient(135deg, #dcd4ca, #cfc7bc); }
+    .hero-trust-dot:first-child { margin-left: 0; background: linear-gradient(135deg, #ece6dd, #d9d0c4); }
+    .hero-trust-dot:nth-child(2) { background: linear-gradient(135deg, #b9c4b5, #9dad99); }
+    .hero-trust-dot:nth-child(3) { background: linear-gradient(135deg, #e2d7cb, #ccbda9); }
+    .hero-trust-text { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--hc-text-soft); text-transform: uppercase; }
+
+    .hero-visual { display: flex; justify-content: flex-end; }
+    .hero-floating-card {
+      width: min(100%, 390px); padding: 26px;
+      background: var(--hc-surface-strong); backdrop-filter: blur(18px);
+      border: 1px solid var(--hc-line); box-shadow: var(--hc-shadow);
+      clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+    }
+    .hero-card-kicker { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--hc-accent-dark); margin-bottom: 16px; }
+    .hero-card-title { font-size: 22px; line-height: 1.2; letter-spacing: -0.05em; font-weight: 600; margin: 0 0 18px; }
+    .hero-card-list { list-style: none; margin: 0; padding: 0; }
+    .hero-card-item { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; padding: 14px 0; border-top: 1px solid rgba(47, 49, 45, 0.10); }
+    .hero-card-item:first-child { border-top: 0; padding-top: 0; }
+    .hero-card-icon { margin-top: 4px; color: var(--hc-accent-dark); }
+    .hero-card-item strong { display: block; font-size: 14px; font-weight: 700; margin-bottom: 4px; line-height: 1.3; }
+    .hero-card-item span { font-size: 13px; line-height: 1.6; color: rgba(47, 49, 45, 0.7); }
+    .hero-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(47, 49, 45, 0.10); }
+    .hero-card-meta { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hc-text-soft); }
+    .hero-card-link { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--hc-accent-dark); }
+
+    /* ============================ TIPOGRAFIA ============================ */
+    .type-row { display: grid; grid-template-columns: 180px 1fr auto; gap: 28px; align-items: baseline; padding: 26px 0; border-top: 1px solid var(--hc-line); }
+    .type-row:first-of-type { border-top: 0; }
+    .type-name { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--hc-text-soft); }
+    .type-metrics { font-size: 12px; font-variant-numeric: tabular-nums; color: var(--hc-text-soft); text-align: right; white-space: nowrap; }
+    .type-preview { min-width: 0; }
+    .t1 { font-size: clamp(3rem, 6vw, 5.4rem); line-height: 0.90; letter-spacing: -0.075em; font-weight: 500; margin: 0; }
+    .t2 { font-size: clamp(2.6rem, 5vw, 4.6rem); line-height: 0.95; letter-spacing: -0.06em; font-weight: 500; margin: 0; }
+    .t3 { font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 0.98; letter-spacing: -0.05em; font-weight: 500; margin: 0; }
+    .t4 { font-size: 22px; line-height: 1.2; letter-spacing: -0.045em; font-weight: 600; margin: 0; }
+    .bold-g { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
+    .bold-m { font-size: 14px; font-weight: 700; margin: 0; }
+    .bold-p { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--hc-accent-dark); margin: 0; }
+    .para { font-size: 17px; line-height: 1.85; color: rgba(47, 49, 45, 0.78); max-width: 60ch; margin: 0; }
+    .reg-m { font-size: 14px; line-height: 1.7; color: rgba(47, 49, 45, 0.7); margin: 0; }
+    .reg-p { font-size: 12px; line-height: 1.6; color: var(--hc-text-soft); margin: 0; }
+
+    /* ============================ CORES ============================ */
+    .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; }
+    .swatch { border: 1px solid var(--hc-line); background: rgba(252,250,247,0.6); clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); overflow: hidden; }
+    .swatch .chip { height: 96px; border-bottom: 1px solid var(--hc-line); }
+    .swatch .meta { padding: 14px 16px; }
+    .swatch .name { font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+    .swatch .val { font-size: 11px; color: var(--hc-text-soft); font-variant-numeric: tabular-nums; margin-top: 4px; word-break: break-all; }
+    .swatch .ctx { font-size: 11px; color: rgba(47,49,45,0.55); margin-top: 8px; line-height: 1.5; }
+
+    .surf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin-top: 20px; }
+    .surf-card { padding: 24px; border: 1px solid var(--hc-line); }
+    .surf-glass { background: var(--hc-surface-strong); backdrop-filter: blur(18px); box-shadow: var(--hc-shadow-soft); clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); }
+    .surf-grad-services { background: radial-gradient(circle at top left, rgba(143,160,140,0.18), transparent 60%), #eef2ec; }
+    .surf-grad-final { background: linear-gradient(180deg, #eef3ed 0%, #f5f2ec 52%, #f8f5f0 100%); }
+    .surf-card .name { font-size: 13px; font-weight: 700; }
+    .surf-card .val { font-size: 11px; color: var(--hc-text-soft); margin-top: 6px; line-height: 1.5; }
+
+    /* ============================ COMPONENTES ============================ */
+    .comp-block { margin-bottom: 48px; }
+    .comp-block h3 { font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--hc-text-soft); margin: 0 0 18px; }
+    .comp-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+    .state-tag { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hc-text-soft); margin-bottom: 10px; }
+
+    /* botão accent (nav cta / process cta) */
+    .btn-accent { display: inline-flex; align-items: center; gap: 10px; height: 48px; padding: 0 24px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: var(--hc-accent); color: #fff; border: 1px solid var(--hc-accent); cursor: pointer; transition: background 200ms ease, transform 200ms ease; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+    .btn-accent:hover { background: var(--hc-accent-dark); transform: translateY(-1px); }
+    .force-hover.hero-btn-primary { background: #1f201d; transform: translateY(-1px); }
+    .force-hover.hero-btn-secondary { background: rgba(252,250,247,0.80); border-color: var(--hc-accent); }
+    .force-hover.btn-accent { background: var(--hc-accent-dark); transform: translateY(-1px); }
+
+    .badge { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid rgba(111,127,109,0.22); color: #5f705d; font-size: 13px; font-weight: 700; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+
+    .demo-card { width: 280px; padding: 24px; border: 1px solid var(--hc-line); background: rgba(238,243,236,0.96); transition: transform 220ms ease, box-shadow 220ms ease; clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); }
+    .demo-card:hover { transform: translateY(-2px); box-shadow: var(--hc-shadow-soft); }
+    .demo-card .kick { font-size: 11px; font-weight: 700; letter-spacing: 0.20em; text-transform: uppercase; color: #6e816b; }
+    .demo-card .ttl { font-size: 20px; font-weight: 600; letter-spacing: -0.045em; line-height: 1.1; margin: 12px 0 8px; }
+    .demo-card .txt { font-size: 13px; line-height: 1.7; color: rgba(47,49,45,0.7); }
+
+    /* formulário */
+    .form-demo { max-width: 460px; display: grid; gap: 18px; }
+    .field-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hc-text-soft); margin-bottom: 8px; }
+    .field-input, .field-select { width: 100%; height: 48px; padding: 0 16px; font-family: inherit; font-size: 14px; color: var(--hc-text); background: rgba(252,250,247,0.94); border: 1px solid var(--hc-line); outline: none; transition: border-color 180ms ease, box-shadow 180ms ease; }
+    .field-input::placeholder { color: rgba(126,128,120,0.8); }
+    .field-input:focus, .field-select:focus, .force-focus { border-color: var(--hc-accent); box-shadow: 0 0 0 3px rgba(143,160,140,0.18); }
+    .field-input.is-error { border-color: #b08274; box-shadow: 0 0 0 3px rgba(176,130,116,0.14); }
+
+    /* FAQ details */
+    .faq-item { border-top: 1px solid var(--hc-line); }
+    .faq-item summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.5; cursor: pointer; list-style: none; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-icon { transition: transform 220ms ease; color: var(--hc-accent-dark); flex-shrink: 0; }
+    .faq-item[open] .faq-icon { transform: rotate(180deg); }
+    .faq-answer { padding: 0 0 22px; max-width: 720px; font-size: 14px; line-height: 1.7; color: rgba(47,49,45,0.7); }
+
+    /* ============================ LAYOUT ============================ */
+    .spacing-scale { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; }
+    .spacing-bar { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .spacing-bar .bar { width: 28px; background: linear-gradient(180deg, var(--hc-accent), var(--hc-accent-dark)); clip-path: polygon(6px 0, 100% 0, 100% 100%, 0 100%, 0 6px); }
+    .spacing-bar .lbl { font-size: 11px; font-variant-numeric: tabular-nums; color: var(--hc-text-soft); }
+    .layout-demo { margin-top: 32px; padding: 28px; border: 1px dashed var(--hc-line); background: rgba(252,250,247,0.4); }
+    .layout-demo .cap { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hc-text-soft); margin-bottom: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .grid-split { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .ph { background: rgba(143,160,140,0.10); border: 1px solid var(--hc-line); height: 88px; display: flex; align-items: center; justify-content: center; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hc-text-soft); }
+
+    /* ============================ MOTION ============================ */
+    @keyframes heroFadeUp {
+      0%   { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+      100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    @keyframes heroFloatSoft {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-12px); }
+    }
+    .motion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+    .motion-cell { padding: 28px; border: 1px solid var(--hc-line); background: rgba(252,250,247,0.6); text-align: center; overflow: hidden; }
+    .motion-stage { height: 96px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+    .motion-obj { width: 64px; height: 64px; background: linear-gradient(135deg, var(--hc-accent), var(--hc-accent-dark)); clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px); }
+    .anim-fadeup { animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate; }
+    .anim-float { animation: heroFloatSoft 7s ease-in-out infinite; }
+    .anim-lift { transition: transform 220ms ease, box-shadow 220ms ease; }
+    .motion-cell:hover .anim-lift { transform: translateY(-6px); box-shadow: var(--hc-shadow-soft); }
+    .motion-name { font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+    .motion-meta { font-size: 11px; color: var(--hc-text-soft); margin-top: 6px; font-variant-numeric: tabular-nums; }
+    .motion-cell .note { font-size: 11px; line-height: 1.5; color: rgba(47,49,45,0.55); margin-top: 10px; }
+
+    /* ============================ ICONOGRAFIA ============================ */
+    .icon-row { display: flex; flex-wrap: wrap; gap: 26px; align-items: center; }
+    .icon-cell { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 22px; border: 1px solid var(--hc-line); background: rgba(252,250,247,0.6); min-width: 120px; }
+    .icon-cell .lbl { font-size: 11px; color: var(--hc-text-soft); font-variant-numeric: tabular-nums; }
+
+    .ed-note { margin-top: 18px; padding: 16px 18px; border-left: 2px solid var(--hc-accent); background: rgba(143,160,140,0.06); font-size: 13px; line-height: 1.65; color: rgba(47,49,45,0.78); }
+    .ed-note b { font-weight: 700; }
+
+    @media (max-width: 880px) {
+      .hero-content { grid-template-columns: 1fr; padding: 56px 32px; }
+      .hero-shell { padding: 24px; }
+      .type-row { grid-template-columns: 1fr; gap: 10px; }
+      .type-metrics { text-align: left; }
+      .grid-3, .grid-split { grid-template-columns: 1fr; }
+      .ds-nav { gap: 14px; overflow-x: auto; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================ NAV FIXO ============================ -->
+  <nav class="ds-nav">
+    <span class="ds-nav-brand"><span class="mark">LH</span>Liora · Design System</span>
+    <a class="link" href="#hero">Hero</a>
+    <a class="link" href="#tipografia">Tipografia</a>
+    <a class="link" href="#cores">Cores</a>
+    <a class="link" href="#componentes">Componentes</a>
+    <a class="link" href="#layout">Layout</a>
+    <a class="link" href="#motion">Motion</a>
+    <a class="link" href="#iconografia">Ícones</a>
+  </nav>
+
+  <!-- ============================ 0 · HERO (clone adaptado) ============================ -->
+  <section id="hero" class="hero-homecare">
+    <div class="hero-shell">
+      <div class="hero-frame">
+        <div class="hero-grid-lines">
+          <span class="hero-grid-line"></span><span class="hero-grid-line"></span>
+          <span class="hero-grid-line"></span><span class="hero-grid-line"></span>
+        </div>
+        <div class="hero-content">
+          <div class="hero-copy hero-fade-up">
+            <span class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Design System · Liora Home Care</span>
+            <h1 class="hero-title">A linguagem visual<br><span class="hero-title-accent hero-font-serif">de uma marca de cuidado.</span></h1>
+            <p class="hero-description">Catálogo vivo de tipografia, cor, componentes, layout e movimento — reconstruído fielmente a partir dos tokens, classes e valores do template original. Calmo, estruturado e premium.</p>
+            <div class="hero-actions">
+              <a class="hero-btn-primary" href="#tipografia">Explorar sistema <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></a>
+              <a class="hero-btn-secondary" href="#cores">Ver paleta</a>
+            </div>
+            <div class="hero-trust">
+              <div class="hero-trust-stack">
+                <span class="hero-trust-dot"></span><span class="hero-trust-dot"></span>
+                <span class="hero-trust-dot"></span><span class="hero-trust-dot"></span>
+              </div>
+              <span class="hero-trust-text">8 seções · 1 acento · cantos biselados</span>
+            </div>
+          </div>
+          <div class="hero-visual hero-float-soft">
+            <div class="hero-floating-card">
+              <span class="hero-card-kicker">A base do sistema</span>
+              <h3 class="hero-card-title">Tokens que sustentam<br>cada superfície.</h3>
+              <ul class="hero-card-list">
+                <li class="hero-card-item">
+                  <iconify-icon class="hero-card-icon" icon="solar:arrow-right-linear"></iconify-icon>
+                  <div><strong>Neutros quentes progressivos</strong><span>Areia e pedra como base — luxo silencioso, baixa saturação.</span></div>
+                </li>
+                <li class="hero-card-item">
+                  <iconify-icon class="hero-card-icon" icon="solar:arrow-right-linear"></iconify-icon>
+                  <div><strong>Sálvia como único acento</strong><span>Um verde dessaturado costura toda a interface sem agredir.</span></div>
+                </li>
+                <li class="hero-card-item">
+                  <iconify-icon class="hero-card-icon" icon="solar:arrow-right-linear"></iconify-icon>
+                  <div><strong>Playfair italic + Urbanist</strong><span>Tensão editorial entre serifa display e sans geométrica.</span></div>
+                </li>
+              </ul>
+              <div class="hero-card-footer">
+                <span class="hero-card-meta">Liora · Home Care</span>
+                <a class="hero-card-link" href="#componentes">Componentes <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 1 · TIPOGRAFIA ============================ -->
+  <section id="tipografia" class="ds-section">
+    <span class="ds-section-label">01 · Tipografia</span>
+    <h2 class="ds-section-title">Escala modular & vozes tipográficas</h2>
+    <p class="ds-section-intro">Duas famílias em diálogo: <b>Urbanist</b> (sans geométrica, estrutura) e <b>Playfair Display italic</b> (serifa display, emoção editorial). Títulos usam <code>line-height</code> sub-unitário (0.90–0.98) e <code>letter-spacing</code> fortemente negativo — densidade tipográfica de marca de luxo.</p>
+
+    <div class="type-row">
+      <span class="type-name">Título 1 · Hero</span>
+      <div class="type-preview"><p class="t1">Cuidado <span class="hero-font-serif">sereno.</span></p></div>
+      <span class="type-metrics">clamp(3–5.4rem) / 0.90<br>tracking −0.075em · 500</span>
+    </div>
+    <div class="type-row">
+      <span class="type-name">Título 2 · Seção</span>
+      <div class="type-preview"><p class="t2">Camadas de <span class="hero-font-serif">serviço.</span></p></div>
+      <span class="type-metrics">clamp(2.6–4.6rem) / 0.95<br>tracking −0.06em · 500</span>
+    </div>
+    <div class="type-row">
+      <span class="type-name">Título 3 · Bloco</span>
+      <div class="type-preview"><p class="t3">Padrão de <span class="hero-font-serif">cuidado.</span></p></div>
+      <span class="type-metrics">clamp(2.2–3.4rem) / 0.98<br>tracking −0.05em · 500</span>
+    </div>
+    <div class="type-row">
+      <span class="type-name">Título 4 · Card</span>
+      <div class="type-preview"><p class="t4">Limpeza recorrente</p></div>
+      <span class="type-metrics">22px / 1.2<br>tracking −0.045em · 600</span>
+    </div>
+    <div class="type-row">
+      <span class="type-name">Negrito G</span>
+      <div class="type-preview"><p class="bold-g">Profissionais cuidadosamente selecionados</p></div>
+      <span class="type-metrics">18px / 1.3 · 700</span>
+    </div>
+    <div class="type-row">
+      <span class="type-name">Negrito M</span>
+      <div class="type-preview"><p class="bold-m">Agendamento flexível por rotina</p></div>
+      <span class="type-metrics">14px · 700</span>
+    </div>
+    <div class="type-row">
+      <span class="type-name">Negrito P · Kicker</span>
+      <div class="type-preview"><p class="bold-p">A base do sistema</p></div>
+      <span class="type-metrics">11px · 700<br>tracking 0.16em · UPPER</span>
+    </div>
+    <div class="type-row">
+      <span class="type-name">Parágrafo</span>
+      <div class="type-preview"><p class="para">Cuidado domiciliar sem esforço e confiável para lares ocupados. Cuidamos da manutenção com precisão, para que seu espaço permaneça calmo e pronto.</p></div>
+      <span class="type-metrics">17px / 1.85<br>measure ~60ch</span>
+    </div>
+    <div class="type-row">
+      <span class="type-name">Regular M</span>
+      <div class="type-preview"><p class="reg-m">Equipes treinadas e consistentes que entregam qualidade previsível a cada visita.</p></div>
+      <span class="type-metrics">14px / 1.7</span>
+    </div>
+    <div class="type-row">
+      <span class="type-name">Regular P · Meta</span>
+      <div class="type-preview"><p class="reg-p">Montreal e arredores · Seg–Sáb 9:00–18:00</p></div>
+      <span class="type-metrics">12px / 1.6</span>
+    </div>
+
+    <div class="ed-note"><b>Leitura de diretor:</b> a razão modular fica próxima de <b>Perfect Fourth (1.333)</b> entre os títulos, mas o salto Hero→Título 2 é maior — a hierarquia é deliberadamente dramática no topo e estabiliza a partir do Título 3, onde a leitura precisa fluir. O contraste serifa-italic × sans cria tensão elegante: o italic carrega a emoção, a sans carrega a informação.</div>
+  </section>
+
+  <hr class="ds-divider">
+
+  <!-- ============================ 2 · CORES E SUPERFÍCIES ============================ -->
+  <section id="cores" class="ds-section">
+    <span class="ds-section-label">02 · Cores & Superfícies</span>
+    <h2 class="ds-section-title">Paleta — neutros quentes + sálvia</h2>
+    <p class="ds-section-intro">Base de neutros <b>quentes</b> (areia/pedra) com um único acento verde-sálvia dessaturado. Estratégia de luxo silencioso: saturação baixíssima, contraste construído por luminosidade — não por cor.</p>
+
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#f7f3ee"></div><div class="meta"><div class="name">--hc-bg</div><div class="val">#f7f3ee</div><div class="ctx">Fundo de página. Areia clara e quente.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#2f312d"></div><div class="meta"><div class="name">--hc-text</div><div class="val">#2f312d</div><div class="ctx">Tinta principal. Quase-preto verde-oliva.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#7e8078"></div><div class="meta"><div class="name">--hc-text-soft</div><div class="val">#7e8078</div><div class="ctx">Texto secundário, metas, labels.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#d8d1c7"></div><div class="meta"><div class="name">--hc-line</div><div class="val">#d8d1c7</div><div class="ctx">Bordas e divisores 1px.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#8fa08c"></div><div class="meta"><div class="name">--hc-accent</div><div class="val">#8fa08c</div><div class="ctx">Acento sálvia. CTAs, dots, ícones.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#6f7f6d"></div><div class="meta"><div class="name">--hc-accent-dark</div><div class="val">#6f7f6d</div><div class="ctx">Hover do acento, kickers.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#4f5d4d"></div><div class="meta"><div class="name">accent-deep</div><div class="val">#4f5d4d</div><div class="ctx">Título-acento serifado (.hero-title-accent).</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#1f201d"></div><div class="meta"><div class="name">ink-hover</div><div class="val">#1f201d</div><div class="ctx">Hover do botão primário.</div></div></div>
+    </div>
+
+    <h3 style="font-size:14px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--hc-text-soft);margin:48px 0 0;">Superfícies & gradientes de seção</h3>
+    <div class="surf-grid">
+      <div class="surf-card surf-glass"><div class="name">Glass surface</div><div class="val">rgba(252,250,247,0.88) + blur(18px)<br>--hc-surface-strong</div></div>
+      <div class="surf-card surf-grad-services"><div class="name">Services BG</div><div class="val">radial sálvia 0.08 → #eef2ec</div></div>
+      <div class="surf-card surf-grad-final"><div class="name">Final BG</div><div class="val">linear #eef3ed → #f5f2ec → #f8f5f0</div></div>
+      <div class="surf-card" style="background:linear-gradient(180deg,#f7f3ee,#e8ede6)"><div class="name">Hero BG</div><div class="val">linear 180° #f7f3ee → #e8ede6</div></div>
+    </div>
+
+    <div class="ed-note"><b>Teoria de cor:</b> a paleta é essencialmente <b>monocromática quente</b> com um único complemento frio (a sálvia). Como o verde está fortemente dessaturado e tem luminosidade próxima dos neutros, ele lê como "respiração" e não como destaque agressivo — exatamente o tom emocional de spa/cuidado que a marca pede. Cada seção desliza a temperatura levemente (areia → verde-acinzentado → areia) criando profundidade sem mudar de identidade.</div>
+  </section>
+
+  <hr class="ds-divider">
+
+  <!-- ============================ 3 · COMPONENTES ============================ -->
+  <section id="componentes" class="ds-section">
+    <span class="ds-section-label">03 · Componentes</span>
+    <h2 class="ds-section-title">Interface — cantos biselados como assinatura</h2>
+    <p class="ds-section-intro">Todo elemento de superfície usa o mesmo motivo: <code>clip-path</code> com corte assimétrico (canto superior-esquerdo + inferior-direito), escalando de 8px a 20px conforme o peso do componente. É o detalhe que dá ao sistema um caráter "arquitetônico" e impede o genérico.</p>
+
+    <div class="comp-block">
+      <h3>Botões — estados</h3>
+      <div class="comp-row">
+        <div><span class="state-tag">Primário</span><button class="hero-btn-primary">Get a quote <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button></div>
+        <div><span class="state-tag">Primário · hover</span><button class="hero-btn-primary force-hover">Get a quote <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button></div>
+        <div><span class="state-tag">Secundário</span><button class="hero-btn-secondary">See services</button></div>
+        <div><span class="state-tag">Secundário · hover</span><button class="hero-btn-secondary force-hover">See services</button></div>
+        <div><span class="state-tag">Acento (CTA)</span><button class="btn-accent">Book now</button></div>
+        <div><span class="state-tag">Acento · hover</span><button class="btn-accent force-hover">Book now</button></div>
+      </div>
+    </div>
+
+    <div class="comp-block">
+      <h3>Badges & índices</h3>
+      <div class="comp-row">
+        <span class="badge">01</span><span class="badge">02</span><span class="badge">03</span><span class="badge">04</span>
+      </div>
+    </div>
+
+    <div class="comp-block">
+      <h3>Card de serviço</h3>
+      <div class="comp-row">
+        <article class="demo-card">
+          <span class="kick">Recurring service</span>
+          <h4 class="ttl">Routine Cleaning</h4>
+          <p class="txt">Manutenção contínua para manter o lar em um ritmo confortável, com consistência focada no detalhe.</p>
+        </article>
+        <article class="demo-card" style="background:rgba(244,248,241,0.96)">
+          <span class="kick">Deep reset</span>
+          <h4 class="ttl">Deep Reset</h4>
+          <p class="txt">Restauração abrangente para os momentos em que o lar precisa de um retorno completo à ordem.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="comp-block">
+      <h3>Formulário — campos & estados</h3>
+      <div class="form-demo">
+        <div><span class="field-label">Name</span><input class="field-input" placeholder="Jane"></div>
+        <div><span class="field-label">Address · focus</span><input class="field-input force-focus" value="123 Rue Saint-Paul"></div>
+        <div><span class="field-label">Email · erro</span><input class="field-input is-error" value="jane@"></div>
+        <div><span class="field-label">Bedrooms</span>
+          <select class="field-select"><option>Select</option><option>1 bedroom</option><option>2 bedrooms</option><option>3 bedrooms</option><option>4+ bedrooms</option></select>
+        </div>
+        <button class="btn-accent" style="justify-content:center">Request my quote <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button>
+      </div>
+    </div>
+
+    <div class="comp-block">
+      <h3>FAQ — disclosure (details/summary)</h3>
+      <div style="max-width:720px">
+        <details class="faq-item" open>
+          <summary><span>What is included in a recurring visit?</span><iconify-icon class="faq-icon" icon="solar:arrow-right-linear" rotate="90deg"></iconify-icon></summary>
+          <div class="faq-answer">Visitas recorrentes tipicamente incluem tirar o pó, aspirar e passar pano nos pisos, higienizar banheiros e restaurar um padrão polido.</div>
+        </details>
+        <details class="faq-item">
+          <summary><span>Do I need to be home during the service?</span><iconify-icon class="faq-icon" icon="solar:arrow-right-linear" rotate="90deg"></iconify-icon></summary>
+          <div class="faq-answer">Não. Muitos clientes preferem fornecer uma chave, código de entrada ou acesso por lockbox.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <hr class="ds-divider">
+
+  <!-- ============================ 4 · LAYOUT & ESPAÇAMENTO ============================ -->
+  <section id="layout" class="ds-section">
+    <span class="ds-section-label">04 · Layout & Espaçamento</span>
+    <h2 class="ds-section-title">Ritmo estrutural</h2>
+    <p class="ds-section-intro">Containers largos (1280–1440px) com <code>padding</code> de seção generoso (96–124px verticais). O espaço negativo é elemento ativo: respiração ampla entre blocos comunica calma e exclusividade.</p>
+
+    <div class="spacing-scale">
+      <div class="spacing-bar"><div class="bar" style="height:8px"></div><span class="lbl">8</span></div>
+      <div class="spacing-bar"><div class="bar" style="height:16px"></div><span class="lbl">16</span></div>
+      <div class="spacing-bar"><div class="bar" style="height:24px"></div><span class="lbl">24</span></div>
+      <div class="spacing-bar"><div class="bar" style="height:32px"></div><span class="lbl">32</span></div>
+      <div class="spacing-bar"><div class="bar" style="height:48px"></div><span class="lbl">48</span></div>
+      <div class="spacing-bar"><div class="bar" style="height:64px"></div><span class="lbl">64</span></div>
+      <div class="spacing-bar"><div class="bar" style="height:96px"></div><span class="lbl">96</span></div>
+      <div class="spacing-bar"><div class="bar" style="height:124px"></div><span class="lbl">124</span></div>
+    </div>
+
+    <div class="layout-demo">
+      <div class="cap">Hero — grid assimétrico 1.05fr / 0.95fr</div>
+      <div class="grid-split"><div class="ph">copy</div><div class="ph">floating card</div></div>
+    </div>
+    <div class="layout-demo">
+      <div class="cap">Catálogo — grid de 3 colunas</div>
+      <div class="grid-3"><div class="ph">card</div><div class="ph">card</div><div class="ph">card</div><div class="ph">card</div><div class="ph">card</div><div class="ph">card</div></div>
+    </div>
+
+    <div class="ed-note"><b>Nota de layout:</b> a escala de espaçamento segue o ritmo <b>8 / 16 / 24 / 32 / 48 / 64 / 96</b> (base-8 com saltos progressivos). Os grids de conteúdo usam frações quase-iguais propositalmente desbalanceadas (1.05/0.95) — assimetria sutil que dá vida sem quebrar o equilíbrio.</div>
+  </section>
+
+  <hr class="ds-divider">
+
+  <!-- ============================ 5 · MOTION ============================ -->
+  <section id="motion" class="ds-section">
+    <span class="ds-section-label">05 · Movimento</span>
+    <h2 class="ds-section-title">Galeria de motion</h2>
+    <p class="ds-section-intro">Duas keyframes originais sustentam toda a narrativa de entrada e ambiente. As demonstrações abaixo rodam em loop contínuo para inspeção.</p>
+
+    <div class="motion-grid">
+      <div class="motion-cell">
+        <div class="motion-stage"><div class="motion-obj anim-fadeup"></div></div>
+        <div class="motion-name">heroFadeUp</div>
+        <div class="motion-meta">0.85s · cubic-bezier(.16,1,.3,1)</div>
+        <div class="note">Entrada coreografada com <b>blur(6px)→0</b> (focus-pull) e translateY(28px)→0.</div>
+      </div>
+      <div class="motion-cell">
+        <div class="motion-stage"><div class="motion-obj anim-float"></div></div>
+        <div class="motion-name">heroFloatSoft</div>
+        <div class="motion-meta">7s · ease-in-out · infinite</div>
+        <div class="note">Flutuação ambiente de ±12px no floating card.</div>
+      </div>
+      <div class="motion-cell">
+        <div class="motion-stage"><div class="motion-obj anim-lift"></div></div>
+        <div class="motion-name">hover · lift</div>
+        <div class="motion-meta">220ms · ease</div>
+        <div class="note">translateY(−2/−6px) + sombra suave. (passe o mouse)</div>
+      </div>
+    </div>
+
+    <div class="ed-note"><b>Leitura de motion:</b> a curva <code>cubic-bezier(0.16, 1, 0.3, 1)</code> é um <b>expo-out</b> — o elemento chega rápido e pousa com extrema suavidade, sensação de "peso que assenta". Combinada com o desfoque que se resolve, a entrada parece uma câmera focando: orgânica, nunca mecânica. O float de 7s é lento o bastante para ser percebido como respiração, não como animação.</div>
+  </section>
+
+  <hr class="ds-divider">
+
+  <!-- ============================ 6 · ICONOGRAFIA ============================ -->
+  <section id="iconografia" class="ds-section">
+    <span class="ds-section-label">06 · Iconografia</span>
+    <h2 class="ds-section-title">Sistema de ícones</h2>
+    <p class="ds-section-intro">Mesmo sistema do original: <b>Iconify web component</b> (<code>&lt;iconify-icon&gt;</code>), conjunto <b>Solar</b> com traço linear fino. Os ícones herdam <code>color</code> e <code>font-size</code> do contexto — escala fluida e cor automática.</p>
+
+    <div class="icon-row">
+      <div class="icon-cell" style="color:var(--hc-text)"><iconify-icon icon="solar:arrow-right-linear" style="font-size:20px"></iconify-icon><span class="lbl">20px · ink</span></div>
+      <div class="icon-cell" style="color:var(--hc-accent-dark)"><iconify-icon icon="solar:arrow-right-linear" style="font-size:28px"></iconify-icon><span class="lbl">28px · accent</span></div>
+      <div class="icon-cell" style="color:var(--hc-text-soft)"><iconify-icon icon="solar:arrow-right-linear" style="font-size:36px"></iconify-icon><span class="lbl">36px · soft</span></div>
+      <div class="icon-cell" style="color:var(--hc-accent)"><iconify-icon icon="solar:arrow-right-linear" style="font-size:48px"></iconify-icon><span class="lbl">48px · sage</span></div>
+    </div>
+
+    <div class="ed-note"><b>Nota:</b> o template referencia explicitamente apenas <code>solar:arrow-right-linear</code> (seta de avanço em CTAs e cards). O traço linear leve combina com a tipografia fina e a paleta dessaturada — qualquer ícone "cheio" quebraria o registro de leveza do sistema.</div>
+  </section>
+
+</body>
+</html>

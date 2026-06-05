@@ -1,0 +1,19 @@
+{
+  "url": "https://liora-homecare.aura.build/",
+  "date": "2026-06-04T14:37:49.488Z",
+  "totalAssets": 336,
+  "totalSize": "24.6 MB",
+  "assetBreakdown": {
+    "svg": 1,
+    "css": 16,
+    "images": 26,
+    "js": 3,
+    "fonts": 290
+  },
+  "options": {
+    "extractDesignTokens": true,
+    "screenshots": true,
+    "scrollToBottom": true,
+    "timeout": 30000
+  }
+}
